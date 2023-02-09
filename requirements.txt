@@ -9,16 +9,19 @@ arrow
 geopy
 polyline
 sqlalchemy
-timezonefinder
+tzfpy; platform_system != "Windows"
+timezonefinder; platform_system == "Windows"
 pyyaml
 aiofiles
 cloudscraper==1.2.58
-python-tcxparser
+git+https://github.com/alenrajsp/tcxreader.git
 rich
 lxml
 eviltransform
 stravaweblib
 tenacity
+numpy
+tzlocal
 
 bs4
 pycrypto

@@ -16,7 +16,8 @@ import {
   ROAD_TRIP_COLOR,
   FLIGHT_COLOR,
   RUN_COLOR,
-  KAYAKING_COLOR
+  KAYAKING_COLOR,
+  SNOWBOARD_COLOR,
 } from './const';
 
 const titleForShow = (run) => {
@@ -155,23 +156,16 @@ const geoJsonForRuns = (runs) => ({
 
 const geoJsonForMap = () => chinaGeojson;
 
-const titleForRun = (run) => {
-  const runDistance = run.distance / 1000;
-  const runHour = +run.start_date_local.slice(11, 13);
-  const type = run.type;
+const titleForType = (type) => {
   switch (type) {
     case 'Run':
-      if (runDistance > 20 && runDistance < 40) {
-        return RUN_TITLES.HALF_MARATHON_RUN_TITLE;
-      }
-      if (runDistance >= 40) {
-        return RUN_TITLES.FULL_MARATHON_RUN_TITLE;
-      }
       return RUN_TITLES.RUN_TITLE;
     case 'Ride':
       return RUN_TITLES.RIDE_TITLE;
     case 'Indoor Ride':
       return RUN_TITLES.INDOOR_RIDE_TITLE;
+    case 'VirtualRide':
+      return RUN_TITLES.VIRTUAL_RIDE_TITLE;
     case 'Hike':
       return RUN_TITLES.HIKE_TITLE;
     case 'Rowing':
@@ -184,9 +178,25 @@ const titleForRun = (run) => {
       return RUN_TITLES.FLIGHT_TITLE;
     case 'Kayaking':
       return RUN_TITLES.KAYAKING_TITLE;
+    case 'Snowboard':
+      return RUN_TITLES.SNOWBOARD_TITLE;
     default:
       return RUN_TITLES.RUN_TITLE;
   }
+}
+
+const titleForRun = (run) => {
+  const type = run.type;
+  if (type == 'Run'){
+      const runDistance = run.distance / 1000;
+      if (runDistance >= 40) {
+        return RUN_TITLES.FULL_MARATHON_RUN_TITLE;
+      }
+      else if (runDistance > 20) {
+        return RUN_TITLES.HALF_MARATHON_RUN_TITLE;
+      }
+  }
+  return titleForType(type);
 };
 
 const colorFromType = (workoutType) => {
@@ -210,6 +220,8 @@ const colorFromType = (workoutType) => {
       return FLIGHT_COLOR;
     case 'Kayaking':
       return KAYAKING_COLOR;
+    case 'Snowboard':
+      return SNOWBOARD_COLOR;
     default:
       return MAIN_COLOR;
   }
@@ -287,6 +299,7 @@ export {
   geoJsonForRuns,
   geoJsonForMap,
   titleForRun,
+  titleForType,
   filterYearRuns,
   filterCityRuns,
   filterTitleRuns,
